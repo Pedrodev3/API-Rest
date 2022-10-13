@@ -1,0 +1,42 @@
+package br.com.fiap.to;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+public class RegistroRecrutadorTO extends UsuarioRegistroGeralTO {
+	private String nomeEmpresa;
+	private String descricaoCargo;
+
+	public RegistroRecrutadorTO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public RegistroRecrutadorTO(Integer idRegistroGeral, String tipoUsuario, String nomeCompleto, String email,
+			String senha, String cpf, String nomeEmpresa, String descricaoCargo) {
+		super.setIdRegistroGeral(idRegistroGeral);
+		super.setTipoUsuario(tipoUsuario);
+		super.setNomeCompleto(nomeCompleto);
+		super.setEmail(email);
+		super.setSenha(senha);
+		super.setCpf(cpf);
+		this.nomeEmpresa = nomeEmpresa;
+		this.descricaoCargo = descricaoCargo;
+	}
+
+	public String getNomeEmpresa() {
+		return nomeEmpresa;
+	}
+
+	public void setNomeEmpresa(String nomeEmpresa) {
+		this.nomeEmpresa = nomeEmpresa;
+	}
+
+	public String getDescricaoCargo() {
+		return descricaoCargo;
+	}
+
+	public void setDescricaoCargo(String descricaoCargo) {
+		this.descricaoCargo = descricaoCargo;
+	}
+
+}

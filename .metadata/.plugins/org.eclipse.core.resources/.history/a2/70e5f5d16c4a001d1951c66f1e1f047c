@@ -1,0 +1,26 @@
+package br.com.fiap.test;
+
+import br.com.fiap.dao.RegistroRecrutadorDAO;
+import br.com.fiap.to.RegistroRecrutadorTO;
+
+public class Test {
+
+	public static void main(String[] args) {
+//		RegistroRecrutadorDAO rrd = new RegistroRecrutadorDAO();
+//		RegistroRecrutadorTO rrt = new RegistroRecrutadorTO();
+//		
+//		rrt.setNomeCompleto("Bill");
+//		rrt.setSenha("1234bill");
+//		rrt.setEmail("bill@gmail.com");
+//		rrt.setCpf("143.431.756-35");
+//		rrt.setNomeEmpresa("Bora Bill");
+//		rrt.setDescricaoCargo("Recrutador");
+//		
+//		System.out.println(rrd.insertGeneral(rrt));
+//		System.out.println(rrd.insertRecruiter(rrt));
+		
+		
+		
+	}
+
+}

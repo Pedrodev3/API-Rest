@@ -1,0 +1,249 @@
+package br.com.fiap.dao;
+
+//O tipo "Connection" é trazida a partir desse import
+import java.sql.*;
+import java.util.ArrayList;
+
+import br.com.fiap.connection.Conexao;
+import br.com.fiap.to.RegistroRecrutadorTO;
+
+public class RegistroRecrutadorDAO implements IDAORegister {
+
+	private Connection con = null;
+	private Connection con2 = null;
+	private RegistroRecrutadorTO registroRecrutador;
+	
+
+	public RegistroRecrutadorDAO() {
+		this.con = new Conexao().abrirConexao();
+	}
+	
+	
+	public String insertGeneral(Object obj) {
+		registroRecrutador = (RegistroRecrutadorTO) obj;
+		String sql = "INSERT INTO T_CHALL_REGISTRO_GERAL (ID_REGISTRO_GERAL, TP_USUARIO, NM_NOME_COMPLETO, DS_EMAIL, DS_SENHA, NR_CPF) "
+				+ "VALUES (SQ_T_CHALL_REGISTRO_GERAL.NEXTVAL, 'R', ?, ?, ?, ?)";
+		
+		PreparedStatement ps = null;
+		
+		try {
+			ps = con.prepareStatement(sql);
+			
+			ps.setString(1, registroRecrutador.getNomeCompleto());
+			ps.setString(2, registroRecrutador.getEmail());
+			ps.setString(3, registroRecrutador.getSenha());
+			ps.setString(4, registroRecrutador.getCpf());
+			
+			if (ps.executeUpdate() > 0) {
+				return "Inserido com sucesso.";
+			} else {
+				return "Erro ao inserir.";
+			}
+			
+		} catch (SQLException e) {
+			return e.getMessage();
+		}
+	}
+
+	
+	public String insertUser(Object obj) {
+		closeCon = (Conexao) obj;
+		registroRecrutador = (RegistroRecrutadorTO) obj;
+		String sql = "INSERT INTO T_CHALL_REGISTRO_RECRUTADOR (ID_REGISTRO_GERAL, NM_EMPRESA, DS_CARGO) "
+				+ "VALUES (SQ_T_CHALL_REGISTRO_GERAL.CURRVAL, ?, ?)";
+		
+		PreparedStatement ps = null;
+		
+		try {
+			ps = con.prepareStatement(sql);
+			
+			ps.setString(1, registroRecrutador.getNomeEmpresa());
+			ps.setString(2, registroRecrutador.getDescricaoCargo());
+			
+			
+			if (ps.executeUpdate() > 0) {
+				closeCon.fecharConexao(con);
+				return "Inserido com sucesso.";
+			} else {
+				closeCon.fecharConexao(con);
+				return "Erro ao inserir.";
+			}
+		} catch (SQLException e) {
+			return e.getMessage();
+		}
+	}
+	
+
+	public String updateGeneral(Object obj) {
+		closeCon = (Conexao) obj;
+		registroRecrutador = (RegistroRecrutadorTO) obj;
+		String sql = "UPDATE T_CHALL_REGISTRO_GERAL SET NM_NOME_COMPLETO = ?, DS_EMAIL = ?, DS_SENHA = ?, NR_CPF = ? "
+				+ "WHERE ID_REGISTRO_GERAL = ? AND TP_USUARIO = 'R'";
+		
+		PreparedStatement ps = null;
+		
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setString(1, registroRecrutador.getNomeCompleto());
+			ps.setString(2, registroRecrutador.getEmail());
+			ps.setString(3, registroRecrutador.getSenha());
+			ps.setString(4, registroRecrutador.getCpf());
+			ps.setInt(5, registroRecrutador.getIdRegistroGeral());
+			if (ps.executeUpdate() > 0) {
+				return "Alterado com sucesso!";
+			} else {
+				return "Erro ao alterar!";
+			}
+		} catch (SQLException e) {
+			return e.getMessage();
+		}
+	}
+	
+	
+	public String updateUser(Object obj) {
+		closeCon = (Conexao) obj;
+        registroRecrutador = (RegistroRecrutadorTO) obj;
+        String sql = "UPDATE T_CHALL_REGISTRO_RECRUTADOR SET NM_EMPRESA = ?, DS_CARGO = ? WHERE ID_REGISTRO_GERAL = ? AND TP_USUARIO = 'R'";
+        
+        PreparedStatement ps = null;
+        
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, registroRecrutador.getNomeEmpresa());
+            ps.setString(2, registroRecrutador.getDescricaoCargo());
+            ps.setInt(3, registroRecrutador.getIdRegistroGeral());
+            if (ps.executeUpdate() > 0) {
+            	closeCon.fecharConexao(con);
+                return "Alterado com sucesso!";
+            } else {
+            	closeCon.fecharConexao(con);
+                return "Erro ao alterar!";
+            }
+        } catch (SQLException e) {
+            return e.getMessage();
+        }
+    }
+	
+	
+	public String deleteUser(Integer id) {
+		String sql = "DELETE FROM T_CHALL_REGISTRO_RECRUTADOR WHERE ID_REGISTRO_GERAL = ?";
+		
+		PreparedStatement ps = null;
+		
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, id);
+			if (ps.executeUpdate() > 0) {
+				return "Excluido com sucesso!";
+			} else {
+				return "Erro ao excluir!";
+			}
+		} catch (SQLException e) {
+			return e.getMessage();
+		}
+	}
+	
+
+	public String deleteGeneral(Integer id) {
+        String sql = "DELETE FROM T_CHALL_REGISTRO_GERAL WHERE ID_REGISTRO_GERAL = ?";
+        
+        PreparedStatement ps = null;
+        
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            if (ps.executeUpdate() > 0) {
+            	con.close();
+                return "Excluido com sucesso!";
+            } else {
+            	con.close();
+                return "Erro ao excluir!";
+            }
+        } catch (SQLException e) {
+            return e.getMessage();
+        }
+    }
+	
+
+	public ArrayList<RegistroRecrutadorTO> select(Integer id) {
+		String sql = "SELECT RR.ID_REGISTRO_GERAL, RG.TP_USUARIO, RG.NM_NOME_COMPLETO,"
+				+ "RG.DS_EMAIL, RG.NR_CPF,"
+				+ "RR.NM_EMPRESA, RR.DS_CARGO"
+				+ " FROM T_CHALL_REGISTRO_GERAL RG INNER JOIN T_CHALL_REGISTRO_RECRUTADOR RR"
+				+ " ON(RG.ID_REGISTRO_GERAL = RR.ID_REGISTRO_GERAL)"
+				+ " WHERE RR.ID_REGISTRO_GERAL = ?";
+		
+		ArrayList<RegistroRecrutadorTO> resul = new ArrayList<RegistroRecrutadorTO>();
+		
+		PreparedStatement ps = null;
+		
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				RegistroRecrutadorTO rr = new RegistroRecrutadorTO();
+				rr.setIdRegistroGeral((rs.getInt(1)));
+				rr.setTipoUsuario(rs.getString(2));
+				rr.setNomeCompleto(rs.getString(3));
+				rr.setEmail(rs.getString(4));
+				rr.setCpf(rs.getString(5));
+				rr.setNomeEmpresa(rs.getString(5));
+				rr.setDescricaoCargo(rs.getString(6));
+				resul.add(rr);
+				
+				con.close();
+				return resul;
+			} else {
+				con.close();
+				return null;
+			}
+		} catch (SQLException e) {
+			return null;
+		}
+	}
+	
+
+	public ArrayList<RegistroRecrutadorTO> selectAll() {
+
+		String sql = "SELECT RR.ID_REGISTRO_GERAL, RG.TP_USUARIO, RG.NM_NOME_COMPLETO,"
+				+ "RG.DS_EMAIL, RG.NR_CPF,"
+				+ "RR.NM_EMPRESA, RR.DS_CARGO"
+				+ " FROM T_CHALL_REGISTRO_GERAL RG INNER JOIN T_CHALL_REGISTRO_RECRUTADOR RR"
+				+ " ON(RG.ID_REGISTRO_GERAL = RR.ID_REGISTRO_GERAL)"
+				+ " ORDER BY ID_REGISTRO_GERAL";
+		
+		ArrayList<RegistroRecrutadorTO> listaRegistroRecrutador = new ArrayList<RegistroRecrutadorTO>();
+		
+		PreparedStatement ps = null;
+		
+		try {
+			
+			ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+
+			if (rs != null) {
+				while (rs.next()) {
+					RegistroRecrutadorTO rr = new RegistroRecrutadorTO();
+					rr.setIdRegistroGeral(rs.getInt(1));
+					rr.setTipoUsuario(rs.getString(2));
+					rr.setNomeCompleto(rs.getString(3));
+					rr.setEmail(rs.getString(4));
+					rr.setCpf(rs.getString(5));
+					rr.setNomeEmpresa(rs.getString(5));
+					rr.setDescricaoCargo(rs.getString(6));
+					listaRegistroRecrutador.add(rr);
+				}
+				
+				con.close();
+				return listaRegistroRecrutador;
+			} else {
+				con.close();
+				return null;
+			}
+		} catch (SQLException e) {
+			return null;
+		}
+	}
+
+}

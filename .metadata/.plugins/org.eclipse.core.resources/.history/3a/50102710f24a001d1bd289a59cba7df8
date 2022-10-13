@@ -1,0 +1,161 @@
+package br.com.fiap.dao;
+
+import java.sql.*;
+import java.util.ArrayList;
+
+import br.com.fiap.connection.Conexao;
+import br.com.fiap.to.EstadoTO;
+
+public class EstadoDAO implements IDAO {
+
+	private Connection con = null;
+	private EstadoTO estado;
+
+	public EstadoDAO() {
+		this.con = new Conexao().abrirConexao();
+	}
+	
+
+	public String insert(Object obj) {
+
+		estado = (EstadoTO) obj;
+
+		String sql = "INSERT INTO T_CHALL_ESTADO (ID_ESTADO, SG_ESTADO, NM_ESTADO) "
+				+ "VALUES (SQ_T_CHALL_ESTADO.NEXTVAL, ?, ?)";
+
+		PreparedStatement ps = null;
+
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setString(1, estado.getSgEstado());
+			ps.setString(2, estado.getNmEstado());
+
+			if (ps.executeUpdate() > 0) {
+				con.close();
+				return "Inserido com sucesso.\n" + "Conexão Fechada!";
+			} else {
+				con.close();
+				return "Erro ao inserir.\n" + "Conexão Fechada!";
+			}
+
+		} catch (SQLException e) {
+			return e.getMessage();
+		}
+	}
+	
+
+	public String update(Object obj) {
+
+		estado = (EstadoTO) obj;
+
+		String sql = "UPDATE T_CHALL_ESTADO SET SG_ESTADO = ?, NM_ESTADO = ? WHERE ID_ESTADO = ?";
+
+		PreparedStatement ps = null;
+
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setString(1, estado.getSgEstado());
+			ps.setString(2, estado.getNmEstado());
+			ps.setInt(3, estado.getIdEstado());
+
+			if (ps.executeUpdate() > 0) {
+				con.close();
+				return "Inserido com sucesso.";
+			} else {
+				con.close();
+				return "Erro ao inserir.";
+			}
+
+		} catch (SQLException e) {
+			return e.getMessage();
+		}
+	}
+	
+
+	public String delete(Object obj) {
+		estado = (EstadoTO) obj;
+		String sql = "DELETE FROM T_CHALL_ESTADO WHERE ID_ESTADO = ? ";
+
+		PreparedStatement ps = null;
+
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, estado.getIdEstado());
+
+			if (ps.executeUpdate() > 0) {
+				con.close();
+				return "Excluido com sucesso!";
+			} else {
+				con.close();
+				return "Erro ao excluir!";
+			}
+		} catch (SQLException e) {
+			return e.getMessage();
+		}
+	}
+	
+
+	public ArrayList<EstadoTO> select(Integer id) {
+		String sql = "SELECT * FROM T_CHALL_ESTADO";
+		sql += " WHERE ID_ESTADO= ?";
+		ArrayList<EstadoTO> resul = new ArrayList<EstadoTO>();
+		
+		PreparedStatement ps = null;
+
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				EstadoTO et = new EstadoTO();
+				et.setIdEstado(rs.getInt(1));
+				et.setSgEstado(rs.getString(2));
+				et.setNmEstado(rs.getString(3));
+				resul.add(et);
+
+				con.close();
+				return resul;
+			} 
+			else {
+				con.close();
+				return null;
+			}
+		} catch (SQLException e) {
+			return null;
+		}
+	}
+	
+
+	public ArrayList<EstadoTO> selectAll() {
+
+		String sql = "SELECT * FROM T_CHALL_ESTADO";
+		ArrayList<EstadoTO> listaEstado = new ArrayList<EstadoTO>();
+
+		PreparedStatement ps = null;
+
+		try {
+			ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+
+			if (rs != null) {
+				while (rs.next()) {
+					EstadoTO et = new EstadoTO();
+
+					et.setIdEstado(rs.getInt(1));
+					et.setSgEstado(rs.getString(2));
+					et.setNmEstado(rs.getString(3));
+					listaEstado.add(et);
+				}
+
+				con.close();
+				return listaEstado;
+			} else {
+				con.close();
+				return null;
+			}
+		} catch (SQLException e) {
+			return null;
+		}
+	}
+}

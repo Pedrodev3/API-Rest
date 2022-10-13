@@ -1,0 +1,99 @@
+package br.com.fiap.bo;
+
+import java.util.ArrayList;
+
+import br.com.fiap.dao.RegistroRecrutadorDAO;
+import br.com.fiap.to.RegistroRecrutadorTO;
+
+public class RegistroRecrutadorBO {
+
+	private RegistroRecrutadorDAO rrd;
+
+	public String cadastrar(RegistroRecrutadorTO rrt) {
+		
+		String resultado1 = null;
+		String resultado2 = null;
+		String resultado3 = null;
+		
+		rrd = new RegistroRecrutadorDAO();
+		
+		resultado1 = rrd.insertGeneral(rrt);
+		resultado2 = rrd.insertUser(rrt);
+		
+		//Regra de negócio
+		if(resultado1 == "Inserido com sucesso.\n Conexão Fechada!" && resultado2 == "Inserido com sucesso.\n Conexão Fechada!") {
+			resultado3 = "Enviado com sucesso.";
+		} else {
+			resultado3 = "Erro ao inserir";
+		}
+		
+		return resultado3;
+	}
+
+	
+	public String atualizar(RegistroRecrutadorTO rrt) {
+
+		String resultado1 = null;
+		String resultado2 = null;
+		String resultado3 = null;
+		
+		rrd = new RegistroRecrutadorDAO();
+		
+		resultado1 = rrd.updateGeneral(rrt);
+		resultado2 = rrd.updateUser(rrt);
+		
+		//Regra de negócio
+		if(resultado1 == "Alterado com sucesso!\n Conexão Fechada!" && resultado2 == "Alterado com sucesso!\n Conexão Fechada!") {
+			resultado3 = "Atualizado com sucesso.";
+		} else {
+			resultado3 = "Erro ao atualizar.";
+		}
+		
+		return resultado3;
+		
+	}
+
+	
+	public String remover(Integer id) {
+
+		String resultado1 = null;
+		String resultado2 = null;
+		String resultado3 = null;
+		
+		rrd = new RegistroRecrutadorDAO();
+		
+		resultado1 = rrd.deleteGeneral(id);
+		resultado2 = rrd.deleteUser(id);
+		
+		//Regra de negócio
+		if(resultado1 == "Excluído com sucesso!\n " && resultado2 == "Excluído com sucesso!") {
+			resultado3 = "Deletado com sucesso.";
+		} else {
+			resultado3 = "Erro ao deletar.";
+		}
+		
+		return resultado3;
+	}
+
+	
+	public ArrayList<RegistroRecrutadorTO> listar(Integer id) {
+
+		rrd = new RegistroRecrutadorDAO();
+		
+		//Regra de negócio
+		if (id != null) {
+			return rrd.select(id);
+		}
+		
+		return null;
+	}
+
+	
+	public ArrayList<RegistroRecrutadorTO> listarTodos() {
+
+		rrd = new RegistroRecrutadorDAO();
+
+		return rrd.selectAll();
+	}
+
+}

@@ -1,0 +1,13 @@
+package br.com.fiap.dao;
+
+public interface IDAORegister {
+public String insertGeneral(Object obj);
+	
+	public String insertRecruiter(Object obj);
+	
+	public String update(Object obj);
+	
+	public String delete(Object obj);	
+	
+	// Método "select" e "selectAll" estão sendo feitos na ClasseDAO
+}

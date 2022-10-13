@@ -1,0 +1,18 @@
+package br.com.fiap.test;
+
+import br.com.fiap.dao.RegistroRecrutadorDAO;
+import br.com.fiap.to.RegistroRecrutadorTO;
+
+public class Test {
+
+	public static void main(String[] args) {
+		RegistroRecrutadorDAO rrd = new RegistroRecrutadorDAO();
+		RegistroRecrutadorTO rrt = new RegistroRecrutadorTO();
+		
+		rrt.setNomeCompleto("Pedro Victor Saraiva de Sá");
+		
+		rrd.insertGeneral(rrt);
+		rrd.insertRecruiter(rrt);
+	}
+
+}

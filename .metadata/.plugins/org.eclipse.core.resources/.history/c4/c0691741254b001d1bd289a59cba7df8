@@ -1,0 +1,21 @@
+package br.com.fiap.to;
+
+import java.sql.Blob;
+import java.time.LocalDate;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+public class RegistroCandidatoTO {
+	private String nrRg;
+	private LocalDate dtNascimento;
+	private String flSexoBiologico;
+	private String tpEscolaridade;
+	private String dsEstadoCivil;
+	private String dsCargo;
+	private Blob dsFoto;
+
+	public RegistroCandidatoTO() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

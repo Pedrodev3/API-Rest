@@ -1,0 +1,10 @@
+package br.com.fiap.bo;
+
+import java.util.ArrayList;
+
+import br.com.fiap.dao.RegistroRecrutadorDAO;
+import br.com.fiap.to.RegistroRecrutadorTO;
+
+public class RegistroCandidatoBO {
+
+}

@@ -1,0 +1,102 @@
+package br.com.fiap.bo;
+
+import java.util.ArrayList;
+
+import br.com.fiap.dao.RegistroRecrutadorDAO;
+import br.com.fiap.to.RegistroRecrutadorTO;
+
+public class RegistroRecrutadorBO {
+
+	private RegistroRecrutadorDAO rrd;
+
+	public String cadastrar(RegistroRecrutadorTO rrt) {
+		
+		String resultado1 = null;
+		String resultado2 = null;
+		String resultado3 = null;
+		
+		rrd = new RegistroRecrutadorDAO();
+		
+		resultado1 = rrd.insertGeneral(rrt);
+		resultado2 = rrd.insertRecruiter(rrt);
+		
+		if(resultado1 == "Inserido com sucesso." && resultado2 == "Inserido com sucesso.") {
+			resultado3 = "Enviado com sucesso";
+		} else {
+			resultado3 = "Erro ao inserir";
+		}
+		
+		return resultado3;
+	}
+	
+	
+//	public String cadastrarRecrutador(RegistroRecrutadorTO rrt) {
+//		
+//		String resultado = null;
+//		
+//		rrd = new RegistroRecrutadorDAO();
+//
+//		// Regras de negócio
+//		if (rrt != null) {
+//			resultado = rrd.insertRecruiter(rrt);
+//		}
+//		
+//		return resultado;
+//	}
+
+	
+	public void atualizar(RegistroRecrutadorTO rrt) {
+
+		//Connection con = Conexao.abrirConexao();
+
+		rrd = new RegistroRecrutadorDAO();
+
+		//Conexao.fecharConexao(con);
+
+		// Regras de negócio
+		rrd.update(rrt);
+	}
+
+	
+	public void remover(Integer id) {
+
+		//Connection con = Conexao.abrirConexao();
+
+		rrd = new RegistroRecrutadorDAO();
+
+		//Conexao.fecharConexao(con);
+
+		// Regras de negócio
+		rrd.delete(id);
+	}
+
+	
+	public ArrayList<RegistroRecrutadorTO> listar(Integer id) {
+
+		ArrayList<RegistroRecrutadorTO> resultado;
+
+		//Connection con = Conexao.abrirConexao();
+
+		rrd = new RegistroRecrutadorDAO();
+		
+		if (id != null) {
+			resultado = rrd.select(id);
+		}
+		
+		return null;
+	}
+
+	
+	public ArrayList<RegistroRecrutadorTO> listarTodos() {
+
+		//Connection con = Conexao.abrirConexao();
+
+		rrd = new RegistroRecrutadorDAO();
+
+		//Conexao.fecharConexao(con);
+
+		// Regras de negócio
+		return rrd.selectAll();
+	}
+
+}

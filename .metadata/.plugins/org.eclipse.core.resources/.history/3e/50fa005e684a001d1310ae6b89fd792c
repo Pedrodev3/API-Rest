@@ -1,0 +1,10 @@
+package br.com.fiap.bo;
+
+import java.util.ArrayList;
+
+import br.com.fiap.dao.EstadoDAO;
+import br.com.fiap.to.EstadoTO;
+
+public class EstadoBO {
+
+}
