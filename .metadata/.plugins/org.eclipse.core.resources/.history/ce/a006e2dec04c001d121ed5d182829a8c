@@ -1,0 +1,59 @@
+package br.com.fiap.to;
+
+import java.time.LocalDate;
+
+public class CandidatoCursoTO {
+
+	private String dtInicio, dtTermino;
+	private int idCandCurso, idRegistroGeral, idCurso;
+
+	public CandidatoCursoTO() {
+	}
+
+	public CandidatoCursoTO(LocalDate dtInicio, LocalDate dtTermino, Integer idCurso, Integer nrCurso, String sgCurso,
+			String nmCurso) {
+		this.dtInicio = dtInicio;
+		this.dtTermino = dtTermino;
+	}
+	
+	public int getIdCandCurso() {
+		return idCandCurso;
+	}
+
+	public void setIdCandCurso(int idCandCurso) {
+		this.idCandCurso = idCandCurso;
+	}
+
+	public int getIdRegistroGeral() {
+		return idRegistroGeral;
+	}
+
+	public void setIdRegistroGeral(int idRegistroGeral) {
+		this.idRegistroGeral = idRegistroGeral;
+	}
+
+	public int getIdCurso() {
+		return idCurso;
+	}
+
+	public void setIdCurso(int idCurso) {
+		this.idCurso = idCurso;
+	}
+
+	public LocalDate getDtInicio() {
+		return dtInicio;
+	}
+
+	public void setDtInicio(LocalDate dtInicio) {
+		this.dtInicio = dtInicio;
+	}
+
+	public LocalDate getDtTermino() {
+		return dtTermino;
+	}
+
+	public void setDtTermino(LocalDate dtTermino) {
+		this.dtTermino = dtTermino;
+	}
+
+}

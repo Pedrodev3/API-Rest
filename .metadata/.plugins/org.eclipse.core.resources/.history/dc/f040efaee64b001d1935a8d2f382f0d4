@@ -1,0 +1,61 @@
+package br.com.fiap.resource;
+
+import java.util.ArrayList;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
+import br.com.fiap.bo.CandidatoCursoBO;
+import br.com.fiap.to.CandidatoCursoTO;
+
+@Path("candidato-curso")
+public class CandidatoCursoResource {
+	private CandidatoCursoBO cb = new CandidatoCursoBO();
+
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response cadastrar(CandidatoCursoTO cct, @Context UriInfo uriInfo) {
+		cb.cadastrar(cct);
+		UriBuilder builder = uriInfo.getAbsolutePathBuilder();
+		builder.path(Integer.toString(cct.getIdCurso()));
+		return Response.created(builder.build()).build();
+	}
+
+	@PUT
+	@Path("/{id}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response atualizar(CandidatoCursoTO cct, @PathParam("id") int id) {
+		cct.setIdCurso(id);
+		cb.atualizar(cct);
+		return Response.ok().build();
+	}
+
+	@DELETE
+	@Path("/{id}")
+	public void excluir(@PathParam("id") int id) {
+		cb.remover(id);
+	}
+
+	@GET
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<CandidatoCursoTO> buscar(@PathParam("id") int id) {
+		return cb.listar(id);
+	}
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<CandidatoCursoTO> buscarTodos() {
+		return cb.listarTodos();
+	}
+
+}

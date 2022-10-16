@@ -1,0 +1,9 @@
+package br.com.fiap.to;
+
+public class CursoTO {
+
+	public CursoTO() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

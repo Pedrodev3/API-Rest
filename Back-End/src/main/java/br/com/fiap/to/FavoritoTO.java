@@ -1,0 +1,65 @@
+package br.com.fiap.to;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+public class FavoritoTO {
+
+	private int idFavorito, idRegistroRecrutador, idRegistroCandidato;
+	private String dtFavoritou, stFavoritos;
+	
+	public FavoritoTO() {}
+
+	
+	
+	public FavoritoTO(int idFavorito, int idRegistroRecrutador, int idRegistroCandidato, String dtFavoritou,
+			String stFavoritos) {
+		super();
+		this.idFavorito = idFavorito;
+		this.idRegistroRecrutador = idRegistroRecrutador;
+		this.idRegistroCandidato = idRegistroCandidato;
+		this.dtFavoritou = dtFavoritou;
+		this.stFavoritos = stFavoritos;
+	}
+
+	public int getIdFavorito() {
+		return idFavorito;
+	}
+
+	public void setIdFavorito(int idFavorito) {
+		this.idFavorito = idFavorito;
+	}
+
+	public int getIdRegistroRecrutador() {
+		return idRegistroRecrutador;
+	}
+
+	public void setIdRegistroRecrutador(int idRegistroRecrutador) {
+		this.idRegistroRecrutador = idRegistroRecrutador;
+	}
+
+	public int getIdRegistroCandidato() {
+		return idRegistroCandidato;
+	}
+
+	public void setIdRegistroCandidato(int idRegistroCandidato) {
+		this.idRegistroCandidato = idRegistroCandidato;
+	}
+
+	public String getDtFavoritou() {
+		return dtFavoritou;
+	}
+
+	public void setDtFavoritou(String dtFavoritou) {
+		this.dtFavoritou = dtFavoritou;
+	}
+
+	public String getStFavoritos() {
+		return stFavoritos;
+	}
+
+	public void setStFavoritos(String stFavoritos) {
+		this.stFavoritos = stFavoritos;
+	}
+	
+}

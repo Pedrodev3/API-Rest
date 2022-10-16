@@ -1,0 +1,9 @@
+package br.com.fiap.to;
+
+public class CandidatoCursoTO {
+
+	public CandidatoCursoTO() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

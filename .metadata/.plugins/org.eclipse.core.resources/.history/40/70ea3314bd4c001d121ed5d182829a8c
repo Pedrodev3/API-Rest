@@ -1,0 +1,62 @@
+package br.com.fiap.to;
+
+public class FavoritoTO {
+
+	private int idFavorito, idRegistroGeral, idRegistroGeral1;
+	private String dtFavoritou, stFavoritos;
+	
+	public FavoritoTO() {}
+
+	
+	
+	public FavoritoTO(int idFavorito, int idRegistroRecrutador, int idRegistroCandidato, String dtFavoritou,
+			String stFavoritos) {
+		super();
+		this.idFavorito = idFavorito;
+		this.idRe
+		this.idRegistroGeral1 = idRegistroGeral1;
+		this.dtFavoritou = dtFavoritou;
+		this.stFavoritos = stFavoritos;
+	}
+
+	public int getIdFavorito() {
+		return idFavorito;
+	}
+
+	public void setIdFavorito(int idFavorito) {
+		this.idFavorito = idFavorito;
+	}
+
+	public int getIdRegistroGeral() {
+		return idRegistroGeral;
+	}
+
+	public void setIdRegistroGeral(int idRegistroGeral) {
+		this.idRegistroGeral = idRegistroGeral;
+	}
+
+	public int getIdRegistroGeral1() {
+		return idRegistroGeral1;
+	}
+
+	public void setIdRegistroGeral1(int idRegistroGeral1) {
+		this.idRegistroGeral1 = idRegistroGeral1;
+	}
+
+	public String getDtFavoritou() {
+		return dtFavoritou;
+	}
+
+	public void setDtFavoritou(String dtFavoritou) {
+		this.dtFavoritou = dtFavoritou;
+	}
+
+	public String getStFavoritos() {
+		return stFavoritos;
+	}
+
+	public void setStFavoritos(String stFavoritos) {
+		this.stFavoritos = stFavoritos;
+	}
+	
+}

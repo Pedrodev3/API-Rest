@@ -1,0 +1,86 @@
+package br.com.fiap.to;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+public class ExperienciaTO {
+	private int idExperiencia;
+	private int idRegistroGeral;
+	private String tpExperiencia;
+	private String dtInicio;
+	private String dtTermino;
+	private String stStatus;
+	private String dsSenioridade;
+
+	public ExperienciaTO() {
+		
+	}
+
+	public ExperienciaTO(int idExperiencia, int idRegistroGeral, String tpExperiencia, String dtInicio,
+			String dtTermino, String stStatus, String dsSenioridade) {
+		this.idExperiencia = idExperiencia;
+		this.idRegistroGeral = idRegistroGeral;
+		this.tpExperiencia = tpExperiencia;
+		this.dtInicio = dtInicio;
+		this.dtTermino = dtTermino;
+		this.stStatus = stStatus;
+		this.dsSenioridade = dsSenioridade;
+	}
+
+	public int getIdExperiencia() {
+		return idExperiencia;
+	}
+
+	public void setIdExperiencia(int idExperiencia) {
+		this.idExperiencia = idExperiencia;
+	}
+
+	public int getIdRegistroGeral() {
+		return idRegistroGeral;
+	}
+
+	public void setIdRegistroGeral(int idRegistroGeral) {
+		this.idRegistroGeral = idRegistroGeral;
+	}
+
+	public String getTpExperiencia() {
+		return tpExperiencia;
+	}
+
+	public void setTpExperiencia(String tpExperiencia) {
+		this.tpExperiencia = tpExperiencia;
+	}
+
+	public String getDtInicio() {
+		return dtInicio;
+	}
+
+	public void setDtInicio(String dtInicio) {
+		this.dtInicio = dtInicio;
+	}
+
+	public String getDtTermino() {
+		return dtTermino;
+	}
+
+	public void setDtTermino(String dtTermino) {
+		this.dtTermino = dtTermino;
+	}
+
+	public String getStStatus() {
+		return stStatus;
+	}
+
+	public void setStStatus(String stStatus) {
+		this.stStatus = stStatus;
+	}
+
+	public String getDsSenioridade() {
+		return dsSenioridade;
+	}
+
+	public void setDsSenioridade(String dsSenioridade) {
+		this.dsSenioridade = dsSenioridade;
+	}
+
+}

@@ -1,0 +1,171 @@
+package br.com.fiap.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+
+import br.com.fiap.to.FavoritoTO;
+
+public class FavoritoDAO {
+
+	private Connection con = null;
+	private FavoritoTO favorito;
+	
+	public String insert(Object obj) {
+
+		favorito = (FavoritoTO) obj;
+
+		String sql = "INSERT INTO T_CHALL_FAVORITO (ID_FAVORITO, ID_REGISTRO_GERAL,"
+				+ " ID_REGISTRO_GERAL1, DT_FAVORITOU, ST_FAVORITOS)"
+				+ " VALUES (SQ_T_CHALL_CANDIDATO_CURSO.NEXTVAL, ?, ?, TO_DATE(?, 'DD/MM/YYYY'), TO_DATE(?, 'DD/MM/YYYY'))";
+
+		PreparedStatement ps = null;
+
+		try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            String dataFavotirou = favorito.getDtFavoritou().formatted(formatter);
+			
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, favorito.getIdRegistroGeral());
+			ps.setInt(2, favorito.getIdRegistroGeral1());
+			ps.setString(3, dataFavotirou);
+			ps.setString(4, favorito.getStFavoritos());
+
+			if (ps.executeUpdate() > 0) {
+				con.close();
+				return "Inserido com sucesso.\n" + "Conexão Fechada!";
+			} else {
+				con.close();
+				return "Erro ao inserir.\n" + "Conexão Fechada!";
+			}
+
+		} catch (SQLException e) {
+			return e.getMessage();
+		}
+	}
+	
+	public String update(Object obj) {
+		favorito = (FavoritoTO) obj;
+
+		String sql = "UPDATE T_CHALL_FAVORITO SET ID_REGISTRO_GERAL = ?, ID_REGISTRO_GERAL1 = ?, "
+				+ " DT_FAVORITOU = TO_DATE(?, 'DD/MM/YYYY'), ST_FAVORITOS = ? "
+				+ " WHERE ID_FAVORITO = ?";
+
+		PreparedStatement ps = null;
+
+		try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            String dataFavotirou = favorito.getDtFavoritou().formatted(formatter);
+			
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, favorito.getIdRegistroGeral());
+			ps.setInt(2, favorito.getIdRegistroGeral1());
+			ps.setString(3, dataFavotirou);
+			ps.setString(4, favorito.getStFavoritos());
+			ps.setInt(5, favorito.getIdFavorito());
+
+			if (ps.executeUpdate() > 0) {
+				con.close();
+				return "Inserido com sucesso.\n" + "Conexão Fechada!";
+			} else {
+				con.close();
+				return "Erro ao inserir.\n" + "Conexão Fechada!";
+			}
+
+		} catch (SQLException e) {
+			return e.getMessage();
+		}
+	}
+	
+	public String delete(Integer id) {
+		String sql = "DELETE FROM T_CHALL_FAVORITO WHERE ID_FAVORITO = ? ";
+
+		PreparedStatement ps = null;
+
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, id);
+
+			if (ps.executeUpdate() > 0) {
+				con.close();
+				return "Excluido com sucesso!\n" + "Conexão Fechada!";
+			} else {
+				con.close();
+				return "Erro ao excluir!\n" + "Conexão Fechada!";
+			}
+		} catch (SQLException e) {
+			return e.getMessage();
+		}
+	}
+	
+	public ArrayList<FavoritoTO> select(Integer id) {
+		String sql = "SELECT * FROM T_CHALL_FAVORITO";
+		sql += " WHERE ID_FAVORITO= ?";
+		ArrayList<FavoritoTO> resul = new ArrayList<FavoritoTO>();
+
+		PreparedStatement ps = null;
+
+		try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            String dataFavotirou = favorito.getDtFavoritou().formatted(formatter);
+			
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				FavoritoTO ccto = new FavoritoTO();
+				ccto.setIdFavorito(rs.getInt(1));
+				ccto.setIdRegistroGeral(rs.getInt(2));
+				ccto.setIdRegistroGeral1(rs.getInt(3));
+				//ccto.setDtInicio(rs.getLocalDate??????); precisa encontrar um forma de fazer funcionar
+				ccto.setStFavoritos(rs.getString(5));
+				resul.add(ccto);
+
+				con.close();
+				return resul;
+			} else {
+				con.close();
+				return null;
+			}
+		} catch (SQLException e) {
+			return null;
+		}
+	}
+	
+	public ArrayList<FavoritoTO> selectAll() {
+
+		String sql = "SELECT * FROM T_CHALL_FAVORITO";
+		ArrayList<FavoritoTO> resul = new ArrayList<FavoritoTO>();
+
+		PreparedStatement ps = null;
+
+		try {
+			ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+
+			if (rs != null) {
+				while (rs.next()) {
+					FavoritoTO ccto = new FavoritoTO();
+					ccto.setIdFavorito(rs.getInt(1));
+					ccto.setIdRegistroGeral(rs.getInt(2));
+					ccto.setIdRegistroGeral1(rs.getInt(3));
+					//ccto.setDtInicio(rs.getLocalDate??????); precisa encontrar um forma de fazer funcionar
+					ccto.setStFavoritos(rs.getString(5));
+					resul.add(ccto);
+				}
+
+				con.close();
+				return resul;
+			} else {
+				con.close();
+				return null;
+			}
+		} catch (SQLException e) {
+			return null;
+		}
+	}
+}

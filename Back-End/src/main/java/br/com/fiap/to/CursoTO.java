@@ -1,0 +1,54 @@
+package br.com.fiap.to;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+public class CursoTO {
+
+	private int idCurso, nrCurso;
+	private String sgCurso, nmCurso;
+
+	public CursoTO() {
+
+	}
+	
+	public CursoTO(int idCurso, int nrCurso, String sgCurso, String nmCurso) {
+		super();
+		this.idCurso = idCurso;
+		this.nrCurso = nrCurso;
+		this.sgCurso = sgCurso;
+		this.nmCurso = nmCurso;
+	}
+	
+	public int getIdCurso() {
+		return idCurso;
+	}
+
+	public void setIdCurso(int idCurso) {
+		this.idCurso = idCurso;
+	}
+
+	public int getNrCurso() {
+		return nrCurso;
+	}
+
+	public void setNrCurso(int nrCurso) {
+		this.nrCurso = nrCurso;
+	}
+
+	public String getSgCurso() {
+		return sgCurso;
+	}
+
+	public void setSgCurso(String sgCurso) {
+		this.sgCurso = sgCurso;
+	}
+
+	public String getNmCurso() {
+		return nmCurso;
+	}
+
+	public void setNmCurso(String nmCurso) {
+		this.nmCurso = nmCurso;
+	}
+}

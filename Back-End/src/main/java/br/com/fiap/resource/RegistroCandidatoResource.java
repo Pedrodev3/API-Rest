@@ -17,7 +17,6 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 import br.com.fiap.bo.RegistroCandidatoBO;
-import br.com.fiap.bo.RegistroRecrutadorBO;
 import br.com.fiap.to.RegistroCandidatoTO;
 
 @Path("/registroCandidato")

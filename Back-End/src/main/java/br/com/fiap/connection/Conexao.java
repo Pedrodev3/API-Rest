@@ -25,4 +25,16 @@ public class Conexao {
 		}
 		return con;
 	}
+	
+	public void fecharConexao(Connection con) {
+        try {
+            con.close();
+            System.out.println("Conexão fechada!");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
 }

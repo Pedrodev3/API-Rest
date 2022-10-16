@@ -1,10 +1,13 @@
 package br.com.fiap.test;
 
 import br.com.fiap.bo.EstadoBO;
+import br.com.fiap.bo.RegistroCandidatoBO;
 import br.com.fiap.dao.EstadoDAO;
+import br.com.fiap.dao.RegistroCandidatoDAO;
 import br.com.fiap.dao.RegistroRecrutadorDAO;
 import br.com.fiap.to.RegistroRecrutadorTO;
 import br.com.fiap.to.EstadoTO;
+import br.com.fiap.to.RegistroCandidatoTO;
 import br.com.fiap.to.RegistroRecrutadorTO;
 
 public class Test {
@@ -22,18 +25,38 @@ public class Test {
 //		
 //		System.out.println(rrd.insertGeneral(rrt));
 //		System.out.println(rrd.insertRecruiter(rrt));
+//		
+//		EstadoDAO ed = new EstadoDAO();
+//		EstadoTO et = new EstadoTO();
+//		EstadoBO eb = new EstadoBO();
+//		
+//		et.setSgEstado("CC");
+//		et.setNmEstado("Conchina");
+//		
+//		
+//		
+//		
+//		System.out.println(eb.cadastrar(et));
 		
-		EstadoDAO ed = new EstadoDAO();
-		EstadoTO et = new EstadoTO();
-		EstadoBO eb = new EstadoBO();
+		RegistroCandidatoDAO rcd = new RegistroCandidatoDAO();
+		RegistroCandidatoTO rct = new RegistroCandidatoTO();
+		RegistroCandidatoBO rcb = new RegistroCandidatoBO();
 		
-		et.setSgEstado("CC");
-		et.setNmEstado("Conchina");
+		rct.setNomeCompleto("Lucas Guerra");
+		rct.setEmail("lucasgay@gmail.com");
+		rct.setSenha("123abc");
+		rct.setCpf("534.786.097-34");
+		rct.setNrRg("54.678.453-7");
+		rct.setDtNascimento("03/06/2004");
+		rct.setFlSexoBiologico("H");
+		rct.setTpEscolaridade("ENSINO MÉDIO COMPLETO");
+		rct.setDsEstadoCivil("C");
+		rct.setDsCargo("Desenvolvedor");
+		rct.setDsFoto(null);
 		
+		System.out.println(rcd.insertGeneral(rct));
+		System.out.println(rcd.insertUser(rct));
 		
-		
-		
-		System.out.println(eb.cadastrar(et));
 		
 //		System.out.println(ed.insert(et));
 //		System.out.println(ed.delete(et));

@@ -1,0 +1,10 @@
+package br.com.fiap.to;
+
+public class PrincipalTO {
+	private int idRegistroGeral;
+
+	public PrincipalTO() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

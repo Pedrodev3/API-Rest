@@ -1,9 +1,0 @@
-package br.com.fiap.to;
-
-public class RegistroCandidatoTO {
-
-	public RegistroCandidatoTO() {
-		// TODO Auto-generated constructor stub
-	}
-
-}

@@ -1,0 +1,9 @@
+package br.com.fiap.to;
+
+public class PrincipalTO {
+
+	public PrincipalTO() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

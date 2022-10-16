@@ -4,8 +4,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 //O tipo "Connection" é trazida a partir desse import
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -14,7 +12,6 @@ import org.apache.tomcat.jni.File;
 
 import br.com.fiap.connection.Conexao;
 import br.com.fiap.to.RegistroCandidatoTO;
-
 
 public class RegistroCandidatoDAO implements IDAORegister {
 
@@ -25,11 +22,10 @@ public class RegistroCandidatoDAO implements IDAORegister {
 		this.con = new Conexao().abrirConexao();
 	}
 
-	
 	public String insertGeneral(Object obj) {
 		registroCandidato = (RegistroCandidatoTO) obj;
-		String sql = "INSERT INTO T_CHALL_REGISTRO_GERAL (ID_REGISTRO_GERAL, TP_USUARIO, NM_NOME_COMPLETO, DS_EMAIL, DS_SENHA, NR_CPF,)"
-				+ "VALUES (SQ_T_CHALL_REGISTRO_GERAL.NEXTVAL,'C', ?, ?, ?, ?)";
+		String sql = "INSERT INTO T_CHALL_REGISTRO_GERAL (ID_REGISTRO_GERAL, TP_USUARIO, NM_NOME_COMPLETO, DS_EMAIL, DS_SENHA, NR_CPF)"
+				+ " VALUES (SQ_T_CHALL_REGISTRO_GERAL.NEXTVAL,'C', ?, ?, ?, ?)";
 
 		try {
 			PreparedStatement ps = con.prepareStatement(sql);
@@ -48,16 +44,15 @@ public class RegistroCandidatoDAO implements IDAORegister {
 			return e.getMessage();
 		}
 	}
-	
-	
+
 	public String insertUser(Object obj) {
 		registroCandidato = (RegistroCandidatoTO) obj;
 		String sql = "INSERT INTO T_CHALL_REGISTRO_CANDIDATO (ID_REGISTRO_GERAL, NR_RG, DT_NASCIMENTO, "
 				+ "FL_SEXO_BIOLOGICO, TP_ESCOLARIDADE, DS_ESTADO_CIVIL, DS_CARGO, DS_FOTO) "
-				+ "VALUES (SQ_T_CHALL_REGISTRO_GERAL.CURRVAL, ?, ?, ?, ?, ?, ?, ?)";
-		
+				+ "VALUES (SQ_T_CHALL_REGISTRO_GERAL.CURRVAL, ?, TO_DATE(?, 'DD/MM/YYYY'), ?, ?, ?, ?, ?)";
+
 		PreparedStatement ps = null;
-		
+
 		try {
 //			//Gravando e inserindo a imagem no Banco de Dados
 //			byte[] foto = ;
@@ -67,21 +62,16 @@ public class RegistroCandidatoDAO implements IDAORegister {
 //			imagem = ImageIO.read(new File("C:/h.png"));
 //			//converte a BufferedImage em byte[]
 //			foto = registroCandidato.getDsFoto().((DataBufferByte)((BufferedImage)imagem).getRaster().getDataBuffer()).getData();
-			
-			// Transformando o LocalDate em String para mandar para o Banco de Dados
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-			String dataNascimento = registroCandidato.getDtNascimento().format(formatter);
-			
+
 			ps = con.prepareStatement(sql);
 			ps.setString(1, registroCandidato.getNrRg());
-			ps.setString(2, dataNascimento);
+			ps.setString(2, registroCandidato.getDtNascimento());
 			ps.setString(3, registroCandidato.getFlSexoBiologico());
 			ps.setString(4, registroCandidato.getTpEscolaridade());
 			ps.setString(5, registroCandidato.getDsEstadoCivil());
 			ps.setString(6, registroCandidato.getDsCargo());
 			ps.setBlob(7, registroCandidato.getDsFoto());
-			
-			
+
 			if (ps.executeUpdate() > 0) {
 				con.close();
 				return "Inserido com sucesso.";
@@ -94,7 +84,6 @@ public class RegistroCandidatoDAO implements IDAORegister {
 		}
 	}
 
-	
 	public String updateGeneral(Object obj) {
 		registroCandidato = (RegistroCandidatoTO) obj;
 		String sql = "INSERT INTO T_CHALL_REGISTRO_GERAL SET NM_NOME_COMPLETO = ?, DS_EMAIL = ?, DS_SENHA = ?, NR_CPF = ? "
@@ -107,7 +96,7 @@ public class RegistroCandidatoDAO implements IDAORegister {
 			ps.setString(3, registroCandidato.getSenha());
 			ps.setString(4, registroCandidato.getCpf());
 			ps.setInt(6, registroCandidato.getIdRegistroGeral());
-			
+
 			if (ps.executeUpdate() > 0) {
 				return "Alterado com sucesso!";
 			} else {
@@ -118,95 +107,109 @@ public class RegistroCandidatoDAO implements IDAORegister {
 			return e.getMessage();
 		}
 	}
-	
-	
+
 	public String updateUser(Object obj) {
-        registroCandidato = (RegistroCandidatoTO) obj;
-        String sql = "UPDATE T_CHALL_REGISTRO_CANDIDATO SET NR_RG = ?, DT_NASCIMENTO = ?, FL_SEXO_BIOLOGICO = ?, TP_ESCOLARIDADE = ?, "
-        		+ "DS_ESTADO_CIVIL = ?, DS_CARGO = ?, DS_FOTO = ? WHERE ID_REGISTRO_GERAL = ? AND TP_USUARIO = 'C'";
-        
-        PreparedStatement ps = null;
-        
-        try {
-        	// Transformando o LocalDate em String para mandar para o Banco de Dados
-        	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        	String dataNascimento = registroCandidato.getDtNascimento().format(formatter);
-        	
-            ps = con.prepareStatement(sql);
-            ps.setString(1, registroCandidato.getNrRg());
-			ps.setString(2, dataNascimento);
+		registroCandidato = (RegistroCandidatoTO) obj;
+		String sql = "UPDATE T_CHALL_REGISTRO_CANDIDATO SET NR_RG = ?, DT_NASCIMENTO = TO_DATE(?, 'DD/MM/YYYY'), FL_SEXO_BIOLOGICO = ?, TP_ESCOLARIDADE = ?, "
+				+ "DS_ESTADO_CIVIL = ?, DS_CARGO = ?, DS_FOTO = ? WHERE ID_REGISTRO_GERAL = ? AND TP_USUARIO = 'C'";
+
+		PreparedStatement ps = null;
+
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setString(1, registroCandidato.getNrRg());
+			ps.setString(2, registroCandidato.getDtNascimento());
 			ps.setString(3, registroCandidato.getFlSexoBiologico());
 			ps.setString(4, registroCandidato.getTpEscolaridade());
 			ps.setString(5, registroCandidato.getDsEstadoCivil());
 			ps.setString(6, registroCandidato.getDsCargo());
 			ps.setBlob(7, registroCandidato.getDsFoto());
 			ps.setInt(8, registroCandidato.getIdRegistroGeral());
-			
-            if (ps.executeUpdate() > 0) {
-            	con.close();
-                return "Alterado com sucesso!";
+
+			if (ps.executeUpdate() > 0) {
+				con.close();
+				return "Alterado com sucesso!";
+			} else {
+				con.close();
+				return "Erro ao alterar!";
+			}
+		} catch (SQLException e) {
+			return e.getMessage();
+		}
+	}
+
+	public String deleteUser(Integer id) {
+		String sql = "DELETE FROM T_CHALL_REGISTRO_CANDIDATO WHERE ID_REGISTRO_GERAL = ?";
+
+		PreparedStatement ps = null;
+
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, id);
+			if (ps.executeUpdate() > 0) {
+				return "Excluido com sucesso!";
+			} else {
+				return "Erro ao excluir!";
+			}
+		} catch (SQLException e) {
+			return e.getMessage();
+		}
+	}
+
+	public String deleteGeneral(Integer id) {
+		String sql = "DELETE FROM T_CHALL_REGISTRO_GERAL WHERE ID_REGISTRO_GERAL = ?";
+
+		PreparedStatement ps = null;
+
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, id);
+			if (ps.executeUpdate() > 0) {
+				con.close();
+				return "Excluido com sucesso!";
+			} else {
+				con.close();
+				return "Erro ao excluir!";
+			}
+		} catch (SQLException e) {
+			return e.getMessage();
+		}
+	}
+	
+	
+	public String listaData(int id) {
+        String sql = "SELECT TO_CHAR(DT_NASCIMENTO, 'YYYY/MM/DD') FROM T_CHALL_REGISTRO_CANDIDATO WHERE ID_REGISTRO_GERAL = ?";
+        
+        PreparedStatement ps = null;
+        
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            String data = null;
+            if (rs.next()) {
+                data = rs.getString(1);
+                return data;
             } else {
-            	con.close();
-                return "Erro ao alterar!";
+                return data;
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             return e.getMessage();
         }
     }
+	
 
-	
-	public String deleteUser(Integer id) {
-		String sql = "DELETE FROM T_CHALL_REGISTRO_CANDIDATO WHERE ID_REGISTRO_GERAL = ?";
-		
-		PreparedStatement ps = null;
-		
-		try {
-			ps = con.prepareStatement(sql);
-			ps.setInt(1, id);
-			if (ps.executeUpdate() > 0) {
-				return "Excluido com sucesso!";
-			} else {
-				return "Erro ao excluir!";
-			}
-		} catch (SQLException e) {
-			return e.getMessage();
-		}
-	}
-	
-	
-	public String deleteGeneral(Integer id) {
-		String sql = "DELETE FROM T_CHALL_REGISTRO_GERAL WHERE ID_REGISTRO_GERAL = ?";
-		
-		PreparedStatement ps = null;
-		
-		try {
-			ps = con.prepareStatement(sql);
-			ps.setInt(1, id);
-			if (ps.executeUpdate() > 0) {
-				con.close();
-				return "Excluido com sucesso!";
-			} else {
-				con.close();
-				return "Erro ao excluir!";
-			}
-		} catch (SQLException e) {
-			return e.getMessage();
-		}
-	}
-
-	
 	public ArrayList<RegistroCandidatoTO> select(Integer id) {
 		String sql = "SELECT RC.ID_REGISTRO_GERAL, RG.TP_USUARIO, RG.NM_NOME_COMPLETO," + "RG.DS_EMAIL, RG.NR_CPF,"
-				+ "RC.NR_RG, RC.DT_NASCIMENTO, RC.FL_SEXO_BIOLOGICO, RC.TP_ESCOLARIDADE"
+				+ "RC.NR_RG, TO_CHAR(RC.DT_NASCIMENTO, 'YYYY/MM/DD'), RC.FL_SEXO_BIOLOGICO, RC.TP_ESCOLARIDADE,"
 				+ "RC.DS_ESTADO_CIVIL, RC.DS_CARGO, RC.DS_FOTO"
 				+ " FROM T_CHALL_REGISTRO_GERAL RG INNER JOIN T_CHALL_REGISTRO_CANDIDATO RC"
-				+ " ON(RG.ID_REGISTRO_GERAL = RC.ID_REGISTRO_GERAL)" 
-				+ " WHERE RC.ID_REGISTRO_GERAL = ?";
+				+ " ON(RG.ID_REGISTRO_GERAL = RC.ID_REGISTRO_GERAL)" + " WHERE RC.ID_REGISTRO_GERAL = ?";
 
 		ArrayList<RegistroCandidatoTO> resul = new ArrayList<RegistroCandidatoTO>();
-		
+
 		PreparedStatement ps = null;
-		
+
 		try {
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, id);
@@ -219,12 +222,8 @@ public class RegistroCandidatoDAO implements IDAORegister {
 				rc.setEmail(rs.getString(4));
 				rc.setCpf(rs.getString(5));
 				rc.setNrRg(rs.getString(6));
-
-				// Transformando o LocalDate em String para mandar para o Banco de Dados
-				// DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				LocalDate dataNascimento = LocalDate.parse(rs.getString(7));
-
-				rc.setDtNascimento(dataNascimento);
+				rc.setDtNascimento(rs.getString(7));
+				rc.setIdade(rs.getInt(1));
 				rc.setFlSexoBiologico(rs.getString(8));
 				rc.setTpEscolaridade(rs.getString(9));
 				rc.setDsEstadoCivil(rs.getString(10));
@@ -243,20 +242,18 @@ public class RegistroCandidatoDAO implements IDAORegister {
 		}
 	}
 
-	
 	public ArrayList<RegistroCandidatoTO> selectAll() {
 
 		String sql = "SELECT RC.ID_REGISTRO_GERAL, RG.TP_USUARIO, RG.NM_NOME_COMPLETO," + "RG.DS_EMAIL, RG.NR_CPF,"
-				+ "RC.NR_RG, RC.DT_NASCIMENTO, RC.FL_SEXO_BIOLOGICO, RC.TP_ESCOLARIDADE"
+				+ "RC.NR_RG, TO_CHAR(RC.DT_NASCIMENTO, 'YYYY/MM/DD'), RC.FL_SEXO_BIOLOGICO, RC.TP_ESCOLARIDADE,"
 				+ "RC.DS_ESTADO_CIVIL, RC.DS_CARGO, RC.DS_FOTO"
 				+ " FROM T_CHALL_REGISTRO_GERAL RG INNER JOIN T_CHALL_REGISTRO_CANDIDATO RC"
-				+ " ON(RG.ID_REGISTRO_GERAL = RC.ID_REGISTRO_GERAL)" 
-				+ " ORDER BY ID_REGISTRO_GERAL";
+				+ " ON(RG.ID_REGISTRO_GERAL = RC.ID_REGISTRO_GERAL)" + " ORDER BY ID_REGISTRO_GERAL";
 
 		ArrayList<RegistroCandidatoTO> listaRegistroCandidato = new ArrayList<RegistroCandidatoTO>();
-		
+
 		PreparedStatement ps = null;
-		
+
 		try {
 			ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
@@ -270,12 +267,8 @@ public class RegistroCandidatoDAO implements IDAORegister {
 					rc.setEmail(rs.getString(4));
 					rc.setCpf(rs.getString(5));
 					rc.setNrRg(rs.getString(6));
-
-					// Transformando o LocalDate em String para mandar para o Banco de Dados
-					// DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-					LocalDate dataNascimento = LocalDate.parse(rs.getString(7));
-
-					rc.setDtNascimento(dataNascimento);
+					rc.setDtNascimento(rs.getString(7));
+					rc.setIdade(rs.getInt(1));
 					rc.setFlSexoBiologico(rs.getString(8));
 					rc.setTpEscolaridade(rs.getString(9));
 					rc.setDsEstadoCivil(rs.getString(10));

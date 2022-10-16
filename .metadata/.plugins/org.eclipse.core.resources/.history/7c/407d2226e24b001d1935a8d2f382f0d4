@@ -1,0 +1,9 @@
+package br.com.fiap.to;
+
+public class FormacaoAcademicaTO {
+
+	public FormacaoAcademicaTO() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

@@ -1,0 +1,190 @@
+package br.com.fiap.dao;
+
+import java.sql.Connection; 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import br.com.fiap.connection.Conexao;
+import br.com.fiap.to.FormacaoAcademicaTO;
+
+
+public class FormacaoAcademicaDAO implements IDAO {
+	private Connection con = null;
+	private FormacaoAcademicaTO formacaoAcademica;
+
+	public FormacaoAcademicaDAO() {
+		this.con = new Conexao().abrirConexao();
+	}
+
+	public String insert(Object obj) {
+
+		formacaoAcademica = (FormacaoAcademicaTO) obj;
+
+		String sql = "INSERT INTO T_CHALL_FORMACAO_ACADEMICA (ID_FORMACAO_ACADEMICA, ID_REGISTRO_GERAL, NM_INSTUTUICAO, DS_ATV_EXTRA_CURRICULARES,"
+				+ "DT_INICIO, DT_TERMINO, NM_CURSO, DS_STATUS_CURSO, DS_ESCOLARIDADE, DS_SEMESTRE, FL_CURSO) "
+				+ "VALUES (SQ_T_CHALL_FORMACAO_ACADEMICA.NEXTVAL, ?, ?, ?, TO_DATE(?, 'DD/MM/YYYY'), TO_DATE(?, 'DD/MM/YYYY'), ?, ?, ?, ?, ?)";
+
+		PreparedStatement ps = null;
+
+//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//		String dataInicio = formacaoAcademica.getDtInicio().format(formatter);
+//		String dataTermino = formacaoAcademica.getDtInicio().format(formatter);
+
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, formacaoAcademica.getIdRegistroGeral());
+			ps.setString(2, formacaoAcademica.getNmInstituicao());
+			ps.setString(3, formacaoAcademica.getDsAtividadeExtra());
+			ps.setString(4, formacaoAcademica.getDtInicio());
+			ps.setString(5, formacaoAcademica.getDtTermino());
+			ps.setString(6, formacaoAcademica.getNmCurso());
+			ps.setString(7, formacaoAcademica.getDsStatusCurso());
+			ps.setString(8, formacaoAcademica.getDsEscolaridade());
+			ps.setString(9, formacaoAcademica.getDsSemestre());
+			ps.setString(10, formacaoAcademica.getFlCurso());
+
+			if (ps.executeUpdate() > 0) {
+				con.close();
+				return "Inserido com sucesso.\n" + "Conexão Fechada!";
+			} else {
+				con.close();
+				return "Erro ao inserir.\n" + "Conexão Fechada!";
+			}
+
+		} catch (SQLException e) {
+			return e.getMessage();
+		}
+	}
+
+	public String update(Object obj) {
+		formacaoAcademica = (FormacaoAcademicaTO) obj;
+		String sql = "UPDATE T_CHALL_FORMACAO_ACADEMICA SET ID_REGISTRO_GERAL = ?, NM_INSTUTUICAO = ?, DS_ATV_EXTRA_CURRICULARES = ?, DT_INICIO = TO_DATE(?, 'DD/MM/YYYY') ,DT_TERMINO = TO_DATE(?, 'DD/MM/YYYY'),NM_CURSO = ?, DS_STATUS_CURSO = ?,DS_ESCOLARIDADE = ?,DS_SEMESTRE = ?,FL_CURSO = ? "
+				+ "WHERE ID_FORMACAO_ACADEMICA = ?";
+
+		PreparedStatement ps = null;
+//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//		String dataInicio = formacaoAcademica.getDtInicio().format(formatter);
+//		String dataTermino = formacaoAcademica.getDtInicio().format(formatter);
+
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, formacaoAcademica.getIdRegistroGeral());
+			ps.setString(2, formacaoAcademica.getNmInstituicao());
+			ps.setString(3, formacaoAcademica.getDsAtividadeExtra());
+			ps.setString(4, formacaoAcademica.getDtInicio());
+			ps.setString(5, formacaoAcademica.getDtTermino());
+			ps.setString(6, formacaoAcademica.getNmCurso());
+			ps.setString(7, formacaoAcademica.getDsStatusCurso());
+			ps.setString(8, formacaoAcademica.getDsEscolaridade());
+			ps.setString(9, formacaoAcademica.getDsSemestre());
+			ps.setString(10, formacaoAcademica.getFlCurso());
+			ps.setInt(11, formacaoAcademica.getIdFormacaoAcademica());
+			
+			if (ps.executeUpdate() > 0) {
+				return "Alterado com sucesso!";
+			} else {
+				return "Erro ao alterar!";
+			}
+		} catch (SQLException e) {
+			return e.getMessage();
+		}
+	}
+
+	public String delete(Integer id) {
+		String sql = "DELETE FROM T_CHALL_FORMACAO_ACADEMICA WHERE ID_FORMACAO_ACADEMICA = ?";
+
+		PreparedStatement ps = null;
+
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, id);
+			if (ps.executeUpdate() > 0) {
+				return "Excluido com sucesso!";
+			} else {
+				return "Erro ao excluir!";
+			}
+		} catch (SQLException e) {
+			return e.getMessage();
+		}
+	}
+	
+	
+	public ArrayList<FormacaoAcademicaTO> select(Integer id) {
+		String sql = "SELECT * FROM T_CHALL_FORMACAO_ACADEMICA";
+		sql += " WHERE ID_FORMACAO_ACADEMICA = ?";
+		ArrayList<FormacaoAcademicaTO> resul = new ArrayList<FormacaoAcademicaTO>();
+
+		PreparedStatement ps = null;
+
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				FormacaoAcademicaTO et = new FormacaoAcademicaTO();
+				et.setIdFormacaoAcademica(rs.getInt(1));
+				et.setIdRegistroGeral(rs.getInt(2));
+				et.setNmInstituicao(rs.getString(3));
+				et.setDsAtividadeExtra(rs.getString(4));
+				et.setDtInicio(rs.getString(5));
+				et.setDtTermino(rs.getString(6));
+				et.setNmCurso(rs.getString(7));
+				et.setDsStatusCurso(rs.getString(8));
+				et.setDsEscolaridade(rs.getString(9));
+				et.setDsSemestre(rs.getString(10));
+				et.setFlCurso(rs.getString(11));
+				resul.add(et);
+
+				con.close();
+				return resul;
+			} else {
+				con.close();
+				return null;
+			}
+		} catch (SQLException e) {
+			return null;
+		}
+	}
+
+	public ArrayList<FormacaoAcademicaTO> selectAll() {
+
+		String sql = "SELECT * FROM T_CHALL_FORMACAO_ACADEMICA";
+
+		ArrayList<FormacaoAcademicaTO> listaFormacaoAcademica = new ArrayList<FormacaoAcademicaTO>();
+
+		PreparedStatement ps = null;
+
+		try {
+			ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+
+			if (rs != null) {
+				while (rs.next()) {
+					FormacaoAcademicaTO rc = new FormacaoAcademicaTO();
+					rc.setIdFormacaoAcademica(rs.getInt(1));
+					rc.setIdRegistroGeral(rs.getInt(2));
+					rc.setNmInstituicao(rs.getString(3));
+					rc.setDsAtividadeExtra(rs.getString(4));
+					rc.setDtInicio(rs.getString(5));
+					rc.setDtTermino(rs.getString(6));
+					rc.setNmCurso(rs.getString(7));
+					rc.setDsStatusCurso(rs.getString(8));
+					rc.setDsEscolaridade(rs.getString(9));
+					rc.setDsSemestre(rs.getString(10));;
+					rc.setFlCurso(rs.getString(11));
+					listaFormacaoAcademica.add(rc);
+				}
+				con.close();
+				return listaFormacaoAcademica;
+			} else {
+				con.close();
+				return null;
+			}
+		} catch (SQLException e) {
+			return null;
+		}
+	}
+}

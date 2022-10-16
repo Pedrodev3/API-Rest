@@ -1,0 +1,9 @@
+package br.com.fiap.to;
+
+public class LinkTO {
+
+	public LinkTO() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

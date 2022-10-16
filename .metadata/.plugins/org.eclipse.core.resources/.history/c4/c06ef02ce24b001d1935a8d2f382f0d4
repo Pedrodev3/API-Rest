@@ -1,0 +1,9 @@
+package br.com.fiap.to;
+
+public class IdiomaCandidatoTO {
+
+	public IdiomaCandidatoTO() {
+		// TODO Auto-generated constructor stub
+	}
+
+}
